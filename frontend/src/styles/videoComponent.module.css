@@ -1,0 +1,185 @@
+/* ---------- Page ---------- */
+.meetVideoContainer {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: #0f172a;
+    color: #fff;
+}
+
+/* ---------- Remote videos (the grid) ---------- */
+.conferenceView {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 80px;              /* leave room for the control bar */
+    padding: 12px;
+    box-sizing: border-box;
+
+    display: grid;
+    gap: 8px;
+    /* Zoom-style gallery: every tile always fits on screen (no scrolling).
+       Rows share the available height equally; columns depend on how many
+       people are in the call (data-count is set from the JSX). */
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    place-content: stretch;
+
+    overflow: hidden;
+}
+
+.conferenceView[data-count="2"]  { grid-template-columns: repeat(2, 1fr); }
+.conferenceView[data-count="3"],
+.conferenceView[data-count="4"]  { grid-template-columns: repeat(2, 1fr); }
+.conferenceView[data-count="5"],
+.conferenceView[data-count="6"],
+.conferenceView[data-count="7"],
+.conferenceView[data-count="8"],
+.conferenceView[data-count="9"]  { grid-template-columns: repeat(3, 1fr); }
+.conferenceView[data-count="10"],
+.conferenceView[data-count="11"],
+.conferenceView[data-count="12"],
+.conferenceView[data-count="13"],
+.conferenceView[data-count="14"],
+.conferenceView[data-count="15"],
+.conferenceView[data-count="16"] { grid-template-columns: repeat(4, 1fr); }
+
+/* 17+ people */
+.conferenceView:not([data-count="0"]):not([data-count="1"]):not([data-count="2"]):not([data-count="3"]):not([data-count="4"]):not([data-count="5"]):not([data-count="6"]):not([data-count="7"]):not([data-count="8"]):not([data-count="9"]):not([data-count="10"]):not([data-count="11"]):not([data-count="12"]):not([data-count="13"]):not([data-count="14"]):not([data-count="15"]):not([data-count="16"]) {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.conferenceView > div {
+    min-width: 0;
+    min-height: 0;
+    background: #1e293b;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.conferenceView video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+}
+
+/* ---------- Your own video (picture-in-picture) ---------- */
+.meetUserVideo {
+    position: absolute;
+    bottom: 92px;
+    left: 16px;
+    z-index: 5;
+
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+
+    background: #000;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    transform: scaleX(-1);     /* mirror preview like a normal meeting app */
+}
+
+/* ---------- Control bar ---------- */
+.buttonContainers {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.buttonContainers svg {
+    font-size: 2.2rem;
+}
+
+/* ---------- Chat panel ---------- */
+.chatRoom {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100vh - 80px);
+    width: 30vw;
+    min-width: 280px;
+    z-index: 20;
+
+    box-sizing: border-box;
+    padding-inline: 20px;
+    background: #fff;
+    color: #111;
+    border-radius: 0 0 0 14px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.chatContainer {
+    position: relative;
+    height: 100%;
+}
+
+.chatContainer h1 {
+    margin: 0;
+    padding: 16px 0 8px;
+    font-size: 1.5rem;
+}
+
+.chattingDisplay {
+    height: calc(100% - 140px);
+    overflow-y: auto;
+    word-break: break-word;
+}
+
+.chattingArea {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12px;
+
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chattingArea > div {
+    flex: 1;                   /* TextField takes remaining width */
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 700px) {
+    .conferenceView[data-count],
+    .conferenceView[data-count="2"] {
+        grid-template-columns: 1fr;
+    }
+
+    .conferenceView[data-count="3"],
+    .conferenceView[data-count="4"],
+    .conferenceView[data-count="5"],
+    .conferenceView[data-count="6"] {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .meetUserVideo {
+        width: 110px;
+        height: 110px;
+        bottom: 90px;
+        left: 8px;
+    }
+
+    .chatRoom {
+        width: 100%;
+        border-radius: 0;
+    }
+}

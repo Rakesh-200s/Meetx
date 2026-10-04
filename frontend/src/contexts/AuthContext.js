@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
          localStorage.setItem("token", request.data.token);
 
         // Change this route according to your application
-        router("/");
+        router("/home");
       }
     } catch (err) {
       throw err;
